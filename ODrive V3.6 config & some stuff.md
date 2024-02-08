@@ -68,7 +68,3 @@ odrv0.save_configuration();
 odrv0.reboot();
 ```
 
-# Good tools
-- to set control mode: odrv0.axis0.controller.config.control_mode = CONTROL_MODE_POSITION_CONTROL || CONTROL_MODE_VELOCITY_CONTROL
-- 
-- to set state: odrv0.axis0.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL

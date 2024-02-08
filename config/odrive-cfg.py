@@ -1,18 +1,7 @@
-#!/usr/bin/env python3
-"""
-These configurations are based off of the hoverboard tutorial found on the
-Odrive Robotics website located here:
-https://docs.odriverobotics.com/hoverboard
-
-@author: Austin Owens
-@date: 3/14/2021
-"""
-
 import argparse
 import sys
 import time
 
-# from fibre.protocol import ChannelBrokenException
 import odrive
 from odrive.enums import *
 
@@ -32,7 +21,7 @@ class HBMotorConfig:
 
     # Min/Max phase resistance of motor
     MIN_PHASE_RESISTANCE = 0
-    MAX_PHASE_RESISTANCE = 0.5
+    MAX_PHASE_RESISTANCE = 0.5 
 
     # Tolerance for encoder offset float
     ENCODER_OFFSET_FLOAT_TOLERANCE = 0.05
@@ -122,7 +111,7 @@ class HBMotorConfig:
 
         # The hall feedback has 6 states for every pole pair in the motor. Since
         # we have 15 pole pairs, we set the cpr to 15*6 = 90.
-        self.odrv_axis.encoder.config.cpr = 90
+        self.odrv_axis.encoder.config.cpr = 97
 
         # Since hall sensors are low resolution feedback, we also bump up the
         # offset calibration displacement to get better calibration accuracy.

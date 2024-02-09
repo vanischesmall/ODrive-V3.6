@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ODrive V3.6 config & some stuff.md",
+                "file": "config/ODrive V3.6 config & some stuff.md",
                 "mode": "source",
                 "source": false
               }
@@ -85,7 +85,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "ODrive V3.6 config & some stuff.md",
+                "file": "config/ODrive V3.6 config & some stuff.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -102,7 +102,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "ODrive V3.6 config & some stuff.md",
+                "file": "config/ODrive V3.6 config & some stuff.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -125,7 +125,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "ODrive V3.6 config & some stuff.md"
+                "file": "config/ODrive V3.6 config & some stuff.md"
               }
             }
           }
@@ -146,15 +146,20 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "46a40277f9f52a24",
+  "active": "b0c691eb476a6141",
   "lastOpenFiles": [
+    "rozenODriver/test.py",
+    "rozenODriver_rs",
+    "test.py~",
+    "test.py",
+    "rozenODriver/rozenODriver.py~",
+    "rozenODriver/main.py~",
     "config/config.py",
     "config/odrive-cfg.py",
     "config",
     "script.py~",
     "script.py",
     "odrivetool-commands.md",
-    "ODrive V3.6 config & some stuff.md",
-    "config.md~"
+    "ODrive V3.6 config & some stuff.md"
   ]
 }

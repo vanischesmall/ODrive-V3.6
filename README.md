@@ -1,5 +1,7 @@
 ***ODrive V3.6*** BLDC Motor Driver impls, configs and other stuff
 
 # [rozenODriver](rozenODriver)
-Simple Python implementation for easy ODrive control from any PC by USB cable
+Simple Python implementation
 
+# [Configuration](config)
+Some configuration to run ODrive with VisionRide BLDC Hoverboards motors

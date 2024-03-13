@@ -86,7 +86,7 @@ class ODriveAPI:
                 self.odrive.axis1.requested_state = AXIS_STATE_CLOSED_LOOP_CONTROL
 
             self.vel1 = self.accelM1.get_acceled_vel(vel) if self.accelM1 is not None else vel
-            self.odrive.axis0.controller.input_vel = self.vel1 * (-1 if self.invertM1 else 1)
+            self.odrive.axis1.controller.input_vel = self.vel1 * (-1 if self.invertM1 else 1)
     
 
 if __name__ == '__main__':

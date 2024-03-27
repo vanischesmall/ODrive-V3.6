@@ -9,21 +9,20 @@ class BLDC:
                  axis: object,
                  ) -> object:
         self.axis = axis 
-        self.invert = -1 if invert else 1
 
         self.mode = CONTROL_MODE_VELOCITY_CONTROL
 
     def set_vel(self, vel: float) -> None:
-        if self.mode != CONTROL_MODE_VELOCITY_CONTROL:
-            self.set_mode(CONTROL_MODE_VELOCITY_CONTROL)
+        #if self.mode != CONTROL_MODE_VELOCITY_CONTROL:
+        #self.set_mode(CONTROL_MODE_VELOCITY_CONTROL)
 
-        self.axis.controller.input_vel = vel * self.invert
+        self.axis.controller.input_vel = vel
 
     def set_pos(self, pos: float) -> None:
         ...
 
     def set_mode(self, mode) -> None:
-        self.controller.config.control_mode = mode
+        self.axis.controller.config.control_mode = mode
 
     def set_state(self, state) -> None:
         self.axis.requested_state = state
@@ -45,17 +44,19 @@ class ODriveAPI:
     def connect(self) -> None:
         log.info('Connecting to ODrive...')
         self.odrive = odrive.find_any()
-        log.succes('ODrive connected!')    
+        log.success('ODrive connected!')    
 
     def start(self) -> None:
         self.m0.set_state(AXIS_STATE_CLOSED_LOOP_CONTROL)
-        self.m1.set_state(AXIS_STATE_CLOSED_LOOP_CONTROL)
-        log.succes('Started succesfully!')
+        self.m0.set_mode(CONTROL_MODE_VELOCITY_CONTROL)
+        #self.m1.set_state(AXIS_STATE_CLOSED_LOOP_CONTROL)
+        log.success('Started succesfully!')
 
     def stop(self) -> None:
         self.m0.set_state(AXIS_STATE_IDLE)
+        self.m0.set_vel(0)
         self.m1.set_state(AXIS_STATE_IDLE)
-        log.succes('Stopped succesfully!')
+        log.success('Stopped succesfully!')
 
 
 if __name__ == "__main__":

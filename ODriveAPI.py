@@ -31,10 +31,6 @@ class BLDC:
                  vel_integrator_gain: float = 0.1,
                  vel_limit: float = 15,
                  ) -> None:
-        """
-
-        :rtype: object
-        """
         self.axis = axis
         self.enc: Encoder = encoder
         self.invert_mlp = 1 if not invert else -1  # Invert multiplier
@@ -81,8 +77,6 @@ class BLDC:
 
 
 class ODriveAPI:
-    odrive: object
-
     def __init__(self,
                  invertM0: bool = False,
                  invertM1: bool = False,
@@ -97,22 +91,21 @@ class ODriveAPI:
         self.m0 = BLDC(self.odrive.axis0, self.invertM0)
         self.m1 = BLDC(self.odrive.axis1, self.invertM1)
 
-    def connect(self) -> odrive:
+    def connect(self) -> None:
         log.info('Connecting to ODrive...')
         self.odrive: object = odrive.find_any()
         log.success('ODrive connected!')
 
-        return self.odrive
 
-    def start(self) -> odrive:
+    def start(self) -> None:
         self.m0.set_state(AxisState.CLOSED_LOOP_CONTROL)
         self.m1.set_state(AxisState.CLOSED_LOOP_CONTROL)
 
-    def stop(self) -> odrive:
+    def stop(self) -> None:
         self.m0.set_state(AxisState.IDLE)
         self.m1.set_state(AxisState.IDLE)
 
-    def reboot(self) -> odrive | None:
+    def reboot(self) -> None:
         log.info('Rebooting...')
         self.odrive.reboot()
         while True:

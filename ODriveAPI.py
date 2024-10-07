@@ -1,36 +1,36 @@
-import odrive
-from odrive.enums import *
-
-from loguru import logger as log
 from time import time
+
+import odrive
+from loguru import logger as log
+from odrive.enums import *
 
 
 class Encoder:
-    def __init__(self,
-                 mode: int = EncoderMode.HALL,
-                 bandwidth: int = 100,
-                 cpr: int = 90):
+    def __init__(
+        self, mode: int = EncoderMode.HALL, bandwidth: int = 100, cpr: int = 90
+    ):
         self.MODE = mode
         self.BANDWIDTH = bandwidth
         self.CPR = cpr
 
 
 class BLDC:
-    def __init__(self,
-                 axis: object,
-                 invert: bool = False,
-                 encoder: Encoder = Encoder(),
-                 pole_pairs: int = 15,
-                 kv: int = 16,
-                 resistance_calib_max_voltage: float = 4.0,
-                 requested_current_range: float = 25.0,
-                 current_control_bandwidth: int = 100,
-                 calibration_current: float = 5.0,
-                 pos_gain: float = 1.0,
-                 vel_gain: float = 0.02,
-                 vel_integrator_gain: float = 0.1,
-                 vel_limit: float = 15,
-                 ) -> None:
+    def __init__(
+        self,
+        axis: object,
+        invert: bool = False,
+        encoder: Encoder = Encoder(),
+        pole_pairs: int = 15,
+        kv: int = 16,
+        resistance_calib_max_voltage: float = 4.0,
+        requested_current_range: float = 25.0,
+        current_control_bandwidth: int = 100,
+        calibration_current: float = 5.0,
+        pos_gain: float = 1.0,
+        vel_gain: float = 0.02,
+        vel_integrator_gain: float = 0.1,
+        vel_limit: float = 15,
+    ) -> None:
         self.axis = axis
         self.enc: Encoder = encoder
         self.invert_mlp = 1 if not invert else -1  # Invert multiplier
@@ -46,7 +46,9 @@ class BLDC:
         self.VEL_LIMIT = vel_limit
         self.POS_GAIN = pos_gain
         self.VEL_GAIN = vel_gain * self.TORQUE_CONSTANT * encoder.CPR
-        self.VEL_INTEGRATOR_GAIN = vel_integrator_gain * self.TORQUE_CONSTANT * self.enc.CPR
+        self.VEL_INTEGRATOR_GAIN = (
+            vel_integrator_gain * self.TORQUE_CONSTANT * self.enc.CPR
+        )
 
         self.mode = None
         self.state = None
@@ -77,10 +79,11 @@ class BLDC:
 
 
 class ODriveAPI:
-    def __init__(self,
-                 invertM0: bool = False,
-                 invertM1: bool = False,
-                 ) -> None:
+    def __init__(
+        self,
+        invertM0: bool = False,
+        invertM1: bool = False,
+    ) -> None:
         self.invertM0 = invertM0
         self.invertM1 = invertM1
 
@@ -92,10 +95,9 @@ class ODriveAPI:
         self.m1 = BLDC(self.odrive.axis1, self.invertM1)
 
     def connect(self) -> None:
-        log.info('Connecting to ODrive...')
+        log.info("Connecting to ODrive...")
         self.odrive: object = odrive.find_any()
-        log.success('ODrive connected!')
-
+        log.success("ODrive connected!")
 
     def start(self) -> None:
         self.m0.set_state(AxisState.CLOSED_LOOP_CONTROL)
@@ -106,12 +108,12 @@ class ODriveAPI:
         self.m1.set_state(AxisState.IDLE)
 
     def reboot(self) -> None:
-        log.info('Rebooting...')
+        log.info("Rebooting...")
         self.odrive.reboot()
         while True:
             try:
                 self.odrive.start()
-                log.success('Reconnected successfully!')
+                log.success("Reconnected successfully!")
                 break
 
             except Exception as err:
@@ -119,28 +121,36 @@ class ODriveAPI:
                 break
 
     def save_cfg(self) -> None:
-        log.info('Saving configuration...')
+        log.info("Saving configuration...")
         self.odrive.save_configuration()
-        log.info('Done')
+        log.info("Done")
 
     def erase_cfg(self) -> None:
-        log.info('Erasing configuration')
+        log.info("Erasing configuration")
         self.odrive.erase_configuration()
-        log.info('Done')
+        log.info("Done")
 
     def configure(self) -> None:
         self.erase_cfg()
         log.warning("Starting configuration ODrive!..")
 
-        axis_ind = input('\n\nEnter axis index or press enter and configure two in line [0/1]')
+        axis_ind = input(
+            "\n\nEnter axis index or press enter and configure two in line [0/1]"
+        )
         if axis_ind not in [0, 1]:
             axis_ind = 2
 
         if axis_ind == 0 or axis_ind == 2:
             self.m0.motor.config.pole_pairs = self.m0.POLE_PAIRS
-            self.m0.motor.config.resistance_calib_max_voltage = self.m0.RESISTANCE_CALIB_MAX_VOLTAGE
-            self.m0.motor.config.requested_current_range = self.m0.REQUESTED_CURRENT_RANGE
-            self.m0.motor.config.current_control_bandwidth = self.m0.REQUESTED_CURRENT_RANGE
+            self.m0.motor.config.resistance_calib_max_voltage = (
+                self.m0.RESISTANCE_CALIB_MAX_VOLTAGE
+            )
+            self.m0.motor.config.requested_current_range = (
+                self.m0.REQUESTED_CURRENT_RANGE
+            )
+            self.m0.motor.config.current_control_bandwidth = (
+                self.m0.REQUESTED_CURRENT_RANGE
+            )
             self.m0.motor.config.torque_constant = self.m0.TORQUE_CONSTANT
             self.m0.motor.config.calibration_current = self.m0.CALIBRATION_CURRENT
             self.m0.motor.config.vel_limit = self.m0.VEL_LIMIT
@@ -156,9 +166,11 @@ class ODriveAPI:
             self.save_cfg()
             self.reboot()
 
-            input('\nBe sure M0 can move free and press enter to start calibration sequence')
+            input(
+                "\nBe sure M0 can move free and press enter to start calibration sequence"
+            )
             self.m0.set_state(AxisState.FULL_CALIBRATION_SEQUENCE)
-            input('\nPress enter if u heard <beep> and motor moves cw and ccw')
+            input("\nPress enter if u heard <beep> and motor moves cw and ccw")
 
             self.stop()
             self.m0.motor.config.pre_calibrated = True
@@ -169,9 +181,15 @@ class ODriveAPI:
 
         if axis_ind == 1 or axis_ind == 2:
             self.m1.motor.config.pole_pairs = self.m1.POLE_PAIRS
-            self.m1.motor.config.resistance_calib_max_voltage = self.m1.RESISTANCE_CALIB_MAX_VOLTAGE
-            self.m1.motor.config.requested_current_range = self.m1.REQUESTED_CURRENT_RANGE
-            self.m1.motor.config.current_control_bandwidth = self.m1.REQUESTED_CURRENT_RANGE
+            self.m1.motor.config.resistance_calib_max_voltage = (
+                self.m1.RESISTANCE_CALIB_MAX_VOLTAGE
+            )
+            self.m1.motor.config.requested_current_range = (
+                self.m1.REQUESTED_CURRENT_RANGE
+            )
+            self.m1.motor.config.current_control_bandwidth = (
+                self.m1.REQUESTED_CURRENT_RANGE
+            )
             self.m1.motor.config.torque_constant = self.m1.TORQUE_CONSTANT
             self.m1.motor.config.calibration_current = self.m1.CALIBRATION_CURRENT
             self.m1.motor.config.vel_limit = self.m1.VEL_LIMIT
@@ -187,9 +205,11 @@ class ODriveAPI:
             self.save_cfg()
             self.reboot()
 
-            input('\nBe sure M0 can move free and press enter to start calibration sequence')
+            input(
+                "\nBe sure M0 can move free and press enter to start calibration sequence"
+            )
             self.m1.set_state(AxisState.FULL_CALIBRATION_SEQUENCE)
-            input('\nPress enter when u heared <beep> and motor cw and ccw')
+            input("\nPress enter when u heared <beep> and motor cw and ccw")
 
             self.stop()
             self.m1.motor.config.pre_calibrated = True
@@ -198,7 +218,7 @@ class ODriveAPI:
             self.save_cfg()
             self.reboot()
 
-        log.success('ODrive configured successfully, congrats!')
+        log.success("ODrive configured successfully, congrats!")
 
 
 if __name__ == "__main__":

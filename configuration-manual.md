@@ -33,17 +33,20 @@ odrv0.axis1.encoder.config.cpr = 90;
 odrv0.axis1.controller.config.pos_gain = 1;
 odrv0.axis1.controller.config.vel_gain = 0.02 * odrv0.axis1.motor.config.torque_constant * odrv0.axis1.encoder.config.cpr;
 odrv0.axis1.controller.config.vel_integrator_gain = 0.1 * odrv0.axis1.motor.config.torque_constant * odrv0.axis1.encoder.config.cpr;
+odrv0.axis1.controller.config.vel_limit = 4;
 
 odrv0.save_configuration();
 odrv0.reboot();
 ```
 
-***Be sure M0 if free to move***
+**_Be sure M0 if free to move_**
+
 ```Shell
 odrv0.axis0.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE;
 ```
 
-***Be sure M1 if free to move***
+**_Be sure M1 if free to move_**
+
 ```Shell
 odrv0.axis1.requested_state = AXIS_STATE_FULL_CALIBRATION_SEQUENCE;
 ```
@@ -61,13 +64,14 @@ odrv0.save_configuration();
 odrv0.reboot();
 ```
 
-
-
 ## Erase config
+
 ```Shell
 odrv0.erase_configuration()
 ```
+
 ## Axis0
+
 ```Shell
 odrv0.axis0.motor.config.pole_pairs = 15;
 odrv0.axis0.motor.config.resistance_calib_max_voltage = 4;
@@ -99,6 +103,7 @@ odrv0.reboot();
 ```
 
 ## Axis 1
+
 ```Shell
 odrv0.axis1.motor.config.pole_pairs = 15;
 odrv0.axis1.motor.config.resistance_calib_max_voltage = 4;
@@ -127,4 +132,3 @@ odrv0.axis1.motor.config.pre_calibrated = True;
 odrv0.save_configuration();
 odrv0.reboot();
 ```
-

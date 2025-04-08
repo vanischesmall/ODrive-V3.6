@@ -4,3 +4,5 @@ sudo bash -c "curl https://cdn.odriverobotics.com/files/odrive-udev-rules.rules 
 
 echo "export PATH=$PATH:~/.local/bin" >> ~/.bashrc 
 
+sudo usermod -a -G dialout $USER
+
